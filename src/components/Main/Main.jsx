@@ -4,7 +4,7 @@ import { assets } from '../../assets/assets'
 import { Context } from '../../context/Contest'
 
 const Main = () => {
-  const { onSent, recentPrompt, showResult, loading, resultData, input, setInput } = useContext(Context)
+  const { onSent, recentPrompt, showResult, loading, currentChat, input, setInput } = useContext(Context)
   const [localInput, setLocalInput] = useState("")
 
   const handleSend = async () => {
@@ -43,24 +43,30 @@ const Main = () => {
               </div>
             </div>
           </>
-         : 
+         :
           <div className="result">
-            <div className="result-title">
-              <img src={assets.user_icon} alt="" />
-              <p>{recentPrompt}</p>
-            </div>
-            <div className="result-data">
-              <img src={assets.gemini_icon} alt="" />
-              {loading
-              ?<div className="loader">
-                <hr />
-                <hr />
-                <hr />
+            {currentChat.map((item, index) => (
+              <div key={index} className="chat-entry">
+                <div className="result-title">
+                  <img src={assets.user_icon} alt="" />
+                  <p>{item.prompt}</p>
                 </div>
-                :<p dangerousSetInnerHTML={{__html:resultData}}>{resultData}</p>
-        
-  }
+                <div className="result-data">
+                  <img src={assets.gemini_icon} alt="" />
+                  <p dangerouslySetInnerHTML={{__html: item.response}}></p>
+                </div>
               </div>
+            ))}
+            {loading && (
+              <div className="result-data">
+                <img src={assets.gemini_icon} alt="" />
+                <div className="loader">
+                  <hr />
+                  <hr />
+                  <hr />
+                </div>
+              </div>
+            )}
           </div>
         }
         <div className="main-bottom">
@@ -80,7 +86,7 @@ const Main = () => {
             <div>
               <img src={assets.gallery_icon} alt="" />
               <img src={assets.mic_icon} alt="" />
-              <img onClick={()=>onSent()} src={assets.send_icon} alt="" onClick={handleSend} />
+              <img onClick={handleSend} src={assets.send_icon} alt="" />
             </div>
           </div>
           <p className="bottom-info">

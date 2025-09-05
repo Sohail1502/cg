@@ -3,7 +3,7 @@ import{GoogleGenerativeAI,
 HarmBlockThreshold,} from "@google/generative-ai"
 const MODEL_NAME="gemini-2.0-flash";
 const API_KEY="AIzaSyBHTSoG9-xLsJEijxwN1JZ0tP9Vwf0V-sw";
-async function runChat(prompt){
+async function runChat(prompt, history = []){
     try {
         const genAI=new GoogleGenerativeAI(API_KEY);
         const model=genAI.getGenerativeModel({model:MODEL_NAME});
@@ -34,7 +34,7 @@ async function runChat(prompt){
         const chat=model.startChat({
             generationConfig,
             safetySettings,
-            history:[]
+            history
         });
         const result=await chat.sendMessage(prompt);
         const response=result.response;
