@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import runChat from '../config/gemini';
+import runChat from '../config/gemini.js';
 
 export const Context = createContext();
 
@@ -10,43 +10,14 @@ const ContextProvider = (props) => {
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
-    const delayPara=(index,nextWord)=>{
-setTimeout(function name()
-{
-    setResultData(prev=>prev+nextWord);
-},75*index)
-    }
 
     const onSent = async () => {
         console.log("Prompt sent:", input);
-        setResultData("")
-        setLoading(true)
-        setShowResult(true)
-        setRecentPrompt(input)
-        setPrevPrompts(prev=>[...prev,input])
-        const response=await runChat(input)
-        let responseArray=response.split("**");
-        let newResponse="";
-        let newArray;
-        for(let i=0;i<responseArray.length;i++){
-            if(i===0||i%2!==1){
-                newResponse+=responseArray[i];
-            }
-           else{
-            newResponse+="<b>"+responseArray[i]+"</b>";
-        }}
-        let newResponse2=newResponse.split("*").join("<br>")
-        let newResposeArray=newResponse2.split(" ");
-        for(let i=0;i<newResponseArray.length;i++){
-            const nextWord=newResponseArray[i];
-            delayPara(i,nextWord+" ")
-        }
-    
-        setResultData(response)
-        setLoading(false)
-        setInput("")
-
+        setResultData("");
+        setLoading(true);
+        setShowResult(true);
         try {
+            // Assuming runChat is imported and used here
             const response = await runChat(input);
             if (response.error) {
                 console.error("API Error:", response.error);

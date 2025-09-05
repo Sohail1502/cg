@@ -1,5 +1,7 @@
 import React,{useState, useContext} from 'react'
 import './Sidebar.css'
+// import runChat from '../config/gemini';
+
 import {assets} from '../../assets/assets'
 import { Context } from '../../context/Contest'
 const Sidebar = () => {
